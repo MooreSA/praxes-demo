@@ -1,26 +1,65 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { useState } from "react";
+import CarTable from "./components/CarTable";
+import BrandFilter from "./components/BrandFilter";
+import "./App.css";
 
 function App() {
+  const [carData, setCarData] = useState<Car[]>([]);
+  const [brandData, setBrandData] = useState<string[]>([]);
+  const [filteredBrandData, setFilteredBrandData] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("https://praxesdemo-default-rtdb.firebaseio.com/brands.json", {
+      method: "GET",
+    }).then((res) => {
+      if (res.ok) {
+        res.json().then((data) => {
+          data.forEach((brand: string) => {
+            if (brand) {
+              setBrandData((prevBrandData) => [...prevBrandData, brand]);
+            }
+          });
+        });
+      } else {
+        console.log("Error");
+      }
+    });
+
+    fetch("https://praxesdemo-default-rtdb.firebaseio.com/cars.json", {
+      method: "GET",
+    }).then((res) => {
+      if (res.ok) {
+        res.json().then((data) => {
+          data.forEach((car: Car) => {
+            if (car) {
+              setCarData((prevCarData) => [...prevCarData, car]);
+            }
+          });
+        });
+      } else {
+        console.log("Error");
+      }
+    });
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <header>Car Demo</header>
+      <main>
+        <CarTable carData={carData} filteredBrandData={filteredBrandData} />
+        <BrandFilter
+          brandData={brandData}
+          setFilteredBrandData={setFilteredBrandData}
+        />
+      </main>
+      <footer></footer>
+    </>
   );
+}
+
+export interface Car {
+  brand: string;
+  model: string;
 }
 
 export default App;
