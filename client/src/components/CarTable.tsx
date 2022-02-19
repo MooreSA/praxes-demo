@@ -9,13 +9,13 @@ interface CarTableProps {
 const CarTable = (props: CarTableProps) => {
   const { carData } = props;
   return (
-    <div>
+    <div className="">
       <h1>Car Table</h1>
-      <table>
+      <table className="table table-striped">
         <thead>
           <tr>
-            <th>Brand</th>
-            <th>Model</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Model</th>
           </tr>
         </thead>
         <tbody>

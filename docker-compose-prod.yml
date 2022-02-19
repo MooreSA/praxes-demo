@@ -3,7 +3,7 @@
 # build and run with: docker compose -f docker-compose-prod.yml up --build
 
 # production docker-compose.yml
-version: '3.7'
+version: "3.7"
 
 services:
   webapp:
@@ -13,7 +13,7 @@ services:
     image: production-server
     container_name: my-production-server
     ports:
-      - "8080:8080"
+      - "80:80"
     environment:
       NODE_ENV: production
     depends_on:
@@ -21,26 +21,26 @@ services:
     networks:
       - app-network
 
-  mongo:
-    build:
-      context: ./mongo
-      dockerfile: Dockerfile
-    image: mongo-server
-    container_name: my-mongo-server
-    volumes:
-      - data-volume:/data/db
-    environment:
-      MONGO_INITDB_DATABASE: [Name of MongoDB Database]
-    ports:
-      - "27017:27017"
-    networks:
-      - app-network
+  # mongo:
+  #   build:
+  #     context: ./mongo
+  #     dockerfile: Dockerfile
+  #   image: mongo-server
+  #   container_name: my-mongo-server
+  #   volumes:
+  #     - data-volume:/data/db
+  #   environment:
+  #     MONGO_INITDB_DATABASE: [Name of MongoDB Database]
+  #   ports:
+  #     - "27017:27017"
+  #   networks:
+  #     - app-network
 
 networks:
-    app-network:
-        driver: bridge
+  app-network:
+    driver: bridge
 
 volumes:
-    data-volume:
-    web-root:
-      driver: local
+  data-volume:
+  web-root:
+    driver: local
